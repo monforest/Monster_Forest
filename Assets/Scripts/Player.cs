@@ -13,11 +13,6 @@ public class Player : MonoBehaviour {
 
     public GameObject groundCheck;
 
-    //public Sprite character1;
-    //public Sprite character2;
-
-    //SpriteRenderer spriteRenderer;
-
     public GameObject c1, c2;
     public GameObject playerWeapon1, playerWeapon2;
 
@@ -37,8 +32,6 @@ public class Player : MonoBehaviour {
 
     void Start()
     {
-     //   spriteRenderer = GetComponent<SpriteRenderer>();
-
         characterChanger = 1;
         //c1 = GameObject.Find("Player/c1");
         //c2 = GameObject.Find("Player/c2");
@@ -50,18 +43,17 @@ public class Player : MonoBehaviour {
     void Update()
     {
         PlayerChangeCharacter();
-
-        PlayerChangeDirection();
-
+        
         if (characterChanger == 1)
         {
             c1.SetActive(true);
             c2.SetActive(false);
-            //spriteRenderer.sprite = character1;
 
             bullet = playerWeapon1;
+
             float newLocalScale = 1.2f;
             transform.localScale = new Vector2(newLocalScale, newLocalScale);
+            PlayerChangeDirection(newLocalScale);
 
             rb2D.isKinematic = false;
 
@@ -74,12 +66,14 @@ public class Player : MonoBehaviour {
         {
             c1.SetActive(false);
             c2.SetActive(true);
+
             bullet = playerWeapon2;
 
-         //   spriteRenderer.sprite = character2;
+            //   spriteRenderer.sprite = character2;
             float newLocalScale = 0.5f;
             transform.localScale = new Vector2(newLocalScale, newLocalScale);
-  
+            PlayerChangeDirection(newLocalScale);
+
             rb2D.isKinematic = true;
 
             PlayerFly();
@@ -119,7 +113,7 @@ public class Player : MonoBehaviour {
 
     private void PlayerFly()
     {
-        animator2.SetTrigger("PlayerFly");
+       // animator2.SetTrigger("PlayerFly");
 
         float horizontal = Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime;
         float vertical = Input.GetAxis("Vertical") * movementSpeed * Time.deltaTime;
@@ -151,18 +145,18 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void PlayerChangeDirection()
+    private void PlayerChangeDirection(float newLocalScale)
     {
-        float absLocalScaleX = Mathf.Abs(transform.localScale.x);
-        float absLocalScaleY = Mathf.Abs(transform.localScale.y);
+        float absLocalScale = Mathf.Abs(newLocalScale);
 
         if (Input.GetAxisRaw("Horizontal") == 1)
         {
-            transform.localScale = new Vector2(absLocalScaleX, absLocalScaleY);
+            transform.localScale = new Vector2(absLocalScale, absLocalScale); 
         }
-        if (Input.GetAxisRaw("Horizontal") == -1)
+
+        else if (Input.GetAxisRaw("Horizontal") == -1)
         {
-            transform.localScale = new Vector2(-absLocalScaleY, absLocalScaleY);
+            transform.localScale = new Vector2(-absLocalScale, absLocalScale);
         }
     }
 
