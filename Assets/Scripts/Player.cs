@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
 
     //SpriteRenderer spriteRenderer;
 
-    private GameObject c1, c2;
+    public GameObject c1, c2;
     public GameObject bullet, bulletSpawner;
     public float bulletForce;
 
@@ -37,8 +37,8 @@ public class Player : MonoBehaviour {
      //   spriteRenderer = GetComponent<SpriteRenderer>();
 
         characterChanger = 1;
-        c1 = GameObject.Find("Player/c1");
-        c2 = GameObject.Find("Player/c2");
+        //c1 = GameObject.Find("Player/c1");
+        //c2 = GameObject.Find("Player/c2");
         rb2D = GetComponent<Rigidbody2D>();
         //   animator = GetComponent<Animator>();
     }
@@ -54,6 +54,7 @@ public class Player : MonoBehaviour {
             c1.SetActive(true);
             c2.SetActive(false);
             //spriteRenderer.sprite = character1;
+
             float newLocalScale = 1.2f;
             transform.localScale = new Vector2(newLocalScale, newLocalScale);
 
