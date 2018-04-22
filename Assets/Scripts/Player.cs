@@ -32,7 +32,7 @@ public class Player : MonoBehaviour {
  //   public Image LoadingBar;
 
     public Animator animator1;
- //   public Animator animator2;
+    public Animator animator2;
 
 
     void Start()
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour {
         //c2 = GameObject.Find("Player/c2");
         rb2D = GetComponent<Rigidbody2D>();
         animator1 = GetComponentInChildren<Animator>();
-   //     animator2 = GetComponentInChildren<Animator>();
+        animator2 = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -119,7 +119,7 @@ public class Player : MonoBehaviour {
 
     private void PlayerFly()
     {
-   //     animator2.SetTrigger("PlayerFly");
+        animator2.SetTrigger("PlayerFly");
 
         float horizontal = Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime;
         float vertical = Input.GetAxis("Vertical") * movementSpeed * Time.deltaTime;
