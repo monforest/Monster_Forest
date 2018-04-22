@@ -12,18 +12,24 @@ public class PlayerStats : MonoBehaviour
     private float counter;
     public float maxCounter;
 
+    GameObject c1, c2;
+
     public Image healthBar;
 
     public int damageFromEnemy;
 
     public bool isDead;
- 
+
+//    Animator animator;
 
     [HideInInspector] public int numberOfGold;
     [HideInInspector] public int numberOfCrystal;
 
     void Start()
     {
+  //      animator = GetComponent<Animator>();
+        c1 = GameObject.Find("Player/c1");
+        c2 = GameObject.Find("Player/c2");
         isDead = false;
         currentHealth = maxHealth;
         previousHealth = maxHealth;
@@ -107,41 +113,27 @@ public class PlayerStats : MonoBehaviour
 
         currentHealth -= damage;
         if(currentHealth <= 0)
-        {
-            isDead = true;
+        {            
             Die();
+
+            isDead = true;
         }
     }
 
     private void Die()
     {
-        Debug.Log("You are dead!");
+        if (c1.activeSelf)
+        {
+            Debug.Log("c1 dead");
+    //        animator.SetTrigger("Player1_dead");
+            
+        }
+        else if (c2.activeSelf)
+        {
+            Debug.Log("c2 dead");
+    //        animator.SetTrigger("Player2_dead");
+        }
 
     }
 
 }
-
-//string caseTag = other.gameObject.tag;
-//switch (caseTag)
-//{
-//    case "BulletEnemy1":
-//        damageFromEnemy = 5;
-//        TakeDamage(damageFromEnemy);
-//        Destroy(other.gameObject);
-//        break;
-//    case "BulletEnemy2":
-//        damageFromEnemy = 10;
-//        TakeDamage(damageFromEnemy);
-//        Destroy(other.gameObject);
-//        break;
-//    case "BulletEnemy3":
-//        damageFromEnemy = 20;
-//        TakeDamage(damageFromEnemy);
-//        Destroy(other.gameObject);
-//        break;
-//    case "AttackEnemyBoss":
-//        damageFromEnemy = 25;
-//        TakeDamage(damageFromEnemy);
-//        Destroy(other.gameObject);
-//        break;
-//}

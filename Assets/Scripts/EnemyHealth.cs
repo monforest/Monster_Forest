@@ -28,16 +28,27 @@ public class EnemyHealth : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
-            Debug.Log("Enemy Got Damaged from Player");
+            damageFromPlayer = 10;
             Destroy(other.gameObject);
+            TakeDamage(damageFromPlayer);
+        }
 
-            currentHealth -= damageFromPlayer;
+        if (other.gameObject.CompareTag("Weapon2"))
+        {
+            damageFromPlayer = 20;
+            Destroy(other.gameObject);
+            TakeDamage(damageFromPlayer);
+        }
+    }
 
-            if (currentHealth <= 0)
-            {
-                isDead = true;
-                EnemyDie();
-            }
+    private void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            EnemyDie();
+            isDead = true;
         }
     }
 
