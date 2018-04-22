@@ -7,11 +7,10 @@ public class Enemy : MonoBehaviour {
 
     public float moveSpeed;
 
-    public int maximumHealth;
-    private int currentHealth;
-    private int killedCount;
+    //public int maximumHealth;
+    //private int currentHealth;
 
-    public int damageFromPlayer = 10;
+    //public int damageFromPlayer = 10;
 
     public GameObject bulletSpawner;  //child gameobject of the enemy, 
     private Transform target;
@@ -27,8 +26,7 @@ public class Enemy : MonoBehaviour {
 
     bool isPlayerInRange;
 
-    bool isEnemyDead = false;
-    bool isPlayerDead = false;
+    bool isPlayerDead;
 
     public float enemyReactionRange = 20f;
     public float enemyAttackRange = 8f;
@@ -38,49 +36,43 @@ public class Enemy : MonoBehaviour {
 
 	void Start () 
     {
-        currentHealth = maximumHealth;
   //      animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
         isPlayerInRange = false;
-        killedCount = 0;
+        isPlayerDead = false;
 	}
    
     
     void Update()
     {
+      //  isEnemyDead = GetComponent<EnemyHealth>().isDead;
+        isPlayerDead = GameControl.gameControl.isPlayerDead;
         EnemyMove();  
-        //EnemyAttack is inside EnemyMove methods
     }
 
     
     public void EnemyMove()
     {
-        float distance = target.position.x - transform.position.x;
+        float distance = Mathf.Abs(target.position.x - transform.position.x);
 
-        if(distance > 0)
+        if (distance >= enemyReactionRange) //too far away, enemy do not react to player
         {
-            transform.localScale = new Vector2(-1, 1);
-        }
-        if(distance < 0)
-        {
-            transform.localScale = new Vector2(1, 1);
-        }
-
-        if (Mathf.Abs(distance) >= enemyReactionRange) //too far away, enemy do not react to player
-        {
-            return;
             //animator.SetTrigger("enemyIdle");
+            return;
         }
 
-        else if (Mathf.Abs(distance) > enemyAttackRange &&  Mathf.Abs(distance) < enemyReactionRange) //close enough to act
+        else if (distance > enemyAttackRange &&  distance < enemyReactionRange) //close enough to act
         {
             //animator.SetTrigger("enemyMove");
- 
+            isPlayerInRange = false;
+            isCoroutineStarted = false;
             float speed = moveSpeed;
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            Vector2 tempTarget = new Vector2(target.position.x, transform.position.y);
+            transform.position = Vector2.MoveTowards(transform.position, tempTarget, speed * Time.deltaTime);
+          //  transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
         }
 
-        else if (Mathf.Abs(distance) <= enemyAttackRange )     
+        else if (distance <= enemyAttackRange )     
         {
             transform.position = transform.position;
             //   animator.SetTrigger("enemyAttack");
@@ -88,16 +80,16 @@ public class Enemy : MonoBehaviour {
 
             if (!isCoroutineStarted)
             {
-                StartCoroutine(CheckAttack(timeBetweenAttacks));
+                StartCoroutine(ReadyToAttack(timeBetweenAttacks));
             }
         }
     }
 
-    IEnumerator CheckAttack(float timeBetweenAttacks)
+    IEnumerator ReadyToAttack(float timeBetweenAttacks)
     {
         isCoroutineStarted = true;
 
-        while (isPlayerInRange && !isPlayerDead && !isEnemyDead)
+        while (isPlayerInRange && !isPlayerDead )
         {
             EnemyAttack();
             yield return new WaitForSeconds(seconds: timeBetweenAttacks);
@@ -105,38 +97,13 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    void EnemyAttack()
+    public void EnemyAttack()
     {
         GameObject ammo = Instantiate(bullet, bulletSpawner.transform.position, Quaternion.identity);
         bulletDirection = target.position - bulletSpawner.transform.position;
         ammo.GetComponent<Rigidbody2D>().AddForce(bulletDirection * bulletForce * Time.deltaTime, ForceMode2D.Impulse);
 
         Destroy(ammo, t : bulletDisappearTime);
-    }
-
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.gameObject.CompareTag("Weapon"))
-        {
-            Debug.Log("Enemy Got Damaged from Player");
-            Destroy(other.gameObject);
-
-            currentHealth -= damageFromPlayer;
-
-            if (currentHealth <= 0)
-            {
-                isEnemyDead = true;
-                EnemyDie();
-            }
-        }
-    }
-
-    private void EnemyDie()
-    {
-        //animator.SetTrigger("enemyDie");
-        gameObject.SetActive(false); // or Destroy(gameObject);
-        killedCount++;
     }
 }
 
