@@ -17,45 +17,51 @@ public class GameControl : MonoBehaviour {
     public bool isPlayerDead = false;
     public bool isEnemyBossDead = false;
 
-    //public GameObject player;
-    PlayerPickup playerStats;
+    public int totalEnemyinScene;
+    public int numberEnemyAlive;
+
+    GameObject[] enemies;
+
+    PlayerStats playerStats;
 
     public GameObject gameOverText; //UI
-    
+
     public Text goldCount;
     public Text crystalCount;
+    public Text enemyKilled;
 
     public bool gameOver = false;
 
-    public float scrollSpeed = -0.5f;   //Background scrolling speed(NOT mid ground) 
+    public float scrollSpeed = -0.5f;   //Background scrolling speed
 
-   
+
     void Awake()
     {
-        if(gameControl == null)
+        if (gameControl == null)
         {
             gameControl = this;
         }
-        if(gameControl != this)
+        if (gameControl != this)
         {
             Destroy(gameObject);
-        }       
+        }
     }
 
     void Start()
     {
-     //   DontDestroyOnLoad(this);
-     
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerPickup>();
+        //   DontDestroyOnLoad(this);
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        totalEnemyinScene = enemies.Length;
+
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
     }
 
-	// Update is called once per frame
-	void Update ()
+    void Update()
     {
-        //if (gameOver)
-        //{
-        //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        //}
+        isPlayerDead = playerStats.isDead;
+
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        numberEnemyAlive = enemies.Length;
 
         if (Input.GetKey("escape"))
         {
@@ -64,8 +70,10 @@ public class GameControl : MonoBehaviour {
 
         goldCount.text = "Gold: " + playerStats.numberOfGold;
         crystalCount.text = "Crystal: " + playerStats.numberOfCrystal;
+        int countDeadEnemies = totalEnemyinScene - numberEnemyAlive;
+        enemyKilled.text = "Count enemies: " + countDeadEnemies;
 
-        if (isPlayerDead) 
+        if (isPlayerDead)
         {
             LosePopup.SetActive(true);
         }
@@ -74,6 +82,11 @@ public class GameControl : MonoBehaviour {
         {
             WinPopup.SetActive(true);
         }
+    }
+
+    public void StartGamePlay()
+    {
+        SceneManager.LoadScene(1);
     }
 
     public void LoadingGamePlay()
@@ -89,6 +102,7 @@ public class GameControl : MonoBehaviour {
         isEnemyBossDead = false;
         playerStats.numberOfCrystal = 0;
         playerStats.numberOfGold = 0;
+        playerStats.currentHealth = playerStats.maxHealth;
         WinPopup.SetActive(false);
         LosePopup.SetActive(false);
     }
