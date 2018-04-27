@@ -26,7 +26,6 @@ public class GameControl : MonoBehaviour {
 
     public GameObject gameOverText; //UI
 
-    public Text goldCount;
     public Text crystalCount;
     public Text enemyKilled;
 
@@ -68,7 +67,6 @@ public class GameControl : MonoBehaviour {
             Application.Quit();
         }
 
-        goldCount.text = "Gold: " + playerStats.numberOfGold;
         crystalCount.text = "Crystal: " + playerStats.numberOfCrystal;
         int countDeadEnemies = totalEnemyinScene - numberEnemyAlive;
         enemyKilled.text = "Count enemies: " + countDeadEnemies;
@@ -101,7 +99,6 @@ public class GameControl : MonoBehaviour {
         isPlayerDead = false;
         isEnemyBossDead = false;
         playerStats.numberOfCrystal = 0;
-        playerStats.numberOfGold = 0;
         playerStats.currentHealth = playerStats.maxHealth;
         WinPopup.SetActive(false);
         LosePopup.SetActive(false);

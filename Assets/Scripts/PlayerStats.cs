@@ -22,7 +22,6 @@ public class PlayerStats : MonoBehaviour
 
 //    Animator animator;
 
-    [HideInInspector] public int numberOfGold;
     [HideInInspector] public int numberOfCrystal;
 
     void Start()
@@ -33,7 +32,7 @@ public class PlayerStats : MonoBehaviour
         isDead = false;
         currentHealth = maxHealth;
         previousHealth = maxHealth;
-        numberOfGold = 0;
+
         numberOfCrystal = 0;
         counter = 0;
     }
@@ -59,19 +58,11 @@ public class PlayerStats : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.tag == "Gold")  //(other.gameObject.CompareTag("Player")
-        {
-            other.gameObject.SetActive(false);
-            // Destroy(other.gameObject);
-
-            numberOfGold++;
-        }
 
         if (other.gameObject.tag == "Crystal")  //(other.gameObject.CompareTag("Player")
         {
             other.gameObject.SetActive(false);
             //            Destroy(other.gameObject);
-
             numberOfCrystal++;
         }
 
@@ -96,14 +87,6 @@ public class PlayerStats : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-        if (other.gameObject.tag == "BulletEnemy4")
-        {
-            damageFromEnemy = 25;
-            TakeDamage(damageFromEnemy);
-            Destroy(other.gameObject);
-        }
-
-        
     }
 
     private void TakeDamage(int damage)

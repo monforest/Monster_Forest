@@ -67,7 +67,7 @@ public class Player : MonoBehaviour {
             c1.SetActive(false);
             c2.SetActive(true);
 
-            bullet = playerWeapon2;
+            bullet = null;
 
             //   spriteRenderer.sprite = character2;
             float newLocalScale = 0.5f;

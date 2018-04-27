@@ -7,20 +7,15 @@ public class Enemy : MonoBehaviour {
 
     public float moveSpeed;
 
-    //public int maximumHealth;
-    //private int currentHealth;
-
-    //public int damageFromPlayer = 10;
-
-    public GameObject bulletSpawner;  //child gameobject of the enemy, 
     private Transform target;
-    public GameObject bullet; // prefab
-    public float bulletForce;
-
-    private Vector2 bulletDirection;
 
     public float timeBetweenAttacks = 4f;
-    public float bulletDisappearTime = 2f;
+
+    //public GameObject bulletSpawner;  //child gameobject of the enemy, 
+    //public GameObject bullet; // prefab
+    //public float bulletForce;
+    //private Vector2 bulletDirection;
+    //public float bulletDisappearTime = 2f;
 
     //    private Animator animator;
 
@@ -45,7 +40,6 @@ public class Enemy : MonoBehaviour {
     
     void Update()
     {
-      //  isEnemyDead = GetComponent<EnemyHealth>().isDead;
         isPlayerDead = GameControl.gameControl.isPlayerDead;
         EnemyMove();  
     }
@@ -55,21 +49,19 @@ public class Enemy : MonoBehaviour {
     {
         float distance = Mathf.Abs(target.position.x - transform.position.x);
 
-        if (distance >= enemyReactionRange) //too far away, enemy do not react to player
+        if (distance >= enemyReactionRange) 
         {
             //animator.SetTrigger("enemyIdle");
             return;
         }
 
-        else if (distance > enemyAttackRange &&  distance < enemyReactionRange) //close enough to act
+        else if (distance > enemyAttackRange &&  distance < enemyReactionRange)
         {
             //animator.SetTrigger("enemyMove");
             isPlayerInRange = false;
             isCoroutineStarted = false;
-            float speed = moveSpeed;
-            Vector2 tempTarget = new Vector2(target.position.x, transform.position.y);
-            transform.position = Vector2.MoveTowards(transform.position, tempTarget, speed * Time.deltaTime);
-          //  transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            EnemyAction();
+           
         }
 
         else if (distance <= enemyAttackRange )     
@@ -93,47 +85,23 @@ public class Enemy : MonoBehaviour {
         {
             EnemyAttack();
             yield return new WaitForSeconds(seconds: timeBetweenAttacks);
-            Debug.Log("Attack made");
         }
     }
 
-    public void EnemyAttack()
+    public virtual void EnemyAction()
     {
-        GameObject ammo = Instantiate(bullet, bulletSpawner.transform.position, Quaternion.identity);
-        bulletDirection = target.position - bulletSpawner.transform.position;
-        ammo.GetComponent<Rigidbody2D>().AddForce(bulletDirection * bulletForce * Time.deltaTime, ForceMode2D.Impulse);
+        float speed = moveSpeed;
+        Vector2 tempTarget = new Vector2(target.position.x, transform.position.y);
+        transform.position = Vector2.MoveTowards(transform.position, tempTarget, speed * Time.deltaTime);
+    }
 
-        Destroy(ammo, t : bulletDisappearTime);
+    public virtual void EnemyAttack()
+    {
+        // animator.SetTrigger(" " )
     }
 }
 
 
-
-
-
-//ammo.GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.localScale.x * bulletForce, 0), ForceMode2D.Impulse);
-//Destroy(ammo, t: bulletDisappearTime);
-
-//while (!isEnemyDead  && !isPlayerDead)  //until enemy or player died, keep attacking
-//{
-//Vector2 downward = new Vector2(0, -1);
-////          Vector2 straight1 = transform.localScale.x * Vector2.right;
-//Vector2 straight = new Vector2(transform.localScale.x, 0);
-//if (target.position.y*2f < transform.position.y)
-//{
-//    bulletDirection = downward;
-//}
-//else bulletDirection = straight;
-
-//           GameObject ammo = theBulletPooler.GetPooledObject();
-//           ammo.transform.position = bulletSpawner.transform.position;
-//           ammo.transform.rotation = Quaternion.identity;
-//           ammo.SetActive(true);
-//           ammo.GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.localScale.x * bulletForce, 0), ForceMode2D.Impulse);
-
-///          yield return new WaitForSeconds(seconds: bulletDisappearTime);
-//           ammo.SetActive(false); // or Destroy(ammo);   I will use Object Pooling for this bullet
-//}
 
 
 
