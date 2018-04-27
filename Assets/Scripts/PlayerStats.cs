@@ -14,7 +14,7 @@ public class PlayerStats : MonoBehaviour
 
     GameObject c1, c2;
 
-    public Image healthBar;
+
 
     public int damageFromEnemy;
 
@@ -53,7 +53,7 @@ public class PlayerStats : MonoBehaviour
         }
 
         //Animation for the healtbar
-        healthBar.fillAmount = Mathf.Lerp(previousHealth / maxHealth, currentHealth / maxHealth, counter / maxCounter);
+      //  healthBar.fillAmount = Mathf.Lerp(previousHealth / maxHealth, currentHealth / maxHealth, counter / maxCounter);
 
     }
 
@@ -109,7 +109,7 @@ public class PlayerStats : MonoBehaviour
     private void TakeDamage(int damage)
     {
         counter = 0;
-        previousHealth = healthBar.fillAmount * maxHealth;
+   //     previousHealth = healthBar.fillAmount * maxHealth;
 
         currentHealth -= damage;
         if(currentHealth <= 0)
