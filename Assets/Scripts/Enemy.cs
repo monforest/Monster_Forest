@@ -10,13 +10,7 @@ public class Enemy : MonoBehaviour {
     private Transform target;
 
     public float timeBetweenAttacks = 4f;
-
-    //public GameObject bulletSpawner;  //child gameobject of the enemy, 
-    //public GameObject bullet; // prefab
-    //public float bulletForce;
-    //private Vector2 bulletDirection;
-    //public float bulletDisappearTime = 2f;
-
+	
     //    private Animator animator;
 
     bool isPlayerInRange;
@@ -90,9 +84,7 @@ public class Enemy : MonoBehaviour {
 
     public virtual void EnemyAction()
     {
-        float speed = moveSpeed;
-        Vector2 tempTarget = new Vector2(target.position.x, transform.position.y);
-        transform.position = Vector2.MoveTowards(transform.position, tempTarget, speed * Time.deltaTime);
+       
     }
 
     public virtual void EnemyAttack()
