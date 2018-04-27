@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyHandRock : Enemy
 {
 
-    private Transform target;
+    public Transform target;
 
     public GameObject bulletSpawner;  //child gameobject of the enemy, 
     public GameObject bullet; // prefab
