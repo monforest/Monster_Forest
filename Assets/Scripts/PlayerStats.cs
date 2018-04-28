@@ -14,8 +14,6 @@ public class PlayerStats : MonoBehaviour
 
     GameObject c1, c2;
 
-
-
     public int damageFromEnemy;
 
     public bool isDead;
@@ -59,37 +57,18 @@ public class PlayerStats : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
 
-        if (other.gameObject.tag == "Crystal")  //(other.gameObject.CompareTag("Player")
+        if (other.gameObject.tag == "Enemy")  //(other.gameObject.CompareTag("Player")
         {
-            other.gameObject.SetActive(false);
-            //            Destroy(other.gameObject);
-            numberOfCrystal++;
-        }
-
-        if (other.gameObject.tag == "BulletEnemy1")
-        {
-            damageFromEnemy = 5;
             TakeDamage(damageFromEnemy);
-            Destroy(other.gameObject);
         }
-
-        if (other.gameObject.tag == "BulletEnemy2")
-        {
-            damageFromEnemy = 10;
-            TakeDamage(damageFromEnemy);
-            Destroy(other.gameObject);
-        }
-
-        if (other.gameObject.tag == "BulletEnemy3")
-        {
-            damageFromEnemy = 20;
-            TakeDamage(damageFromEnemy);
-            Destroy(other.gameObject);
-        }
-
     }
 
-    private void TakeDamage(int damage)
+    public void ModifyHealth(int healthModifier) 
+    {
+        currentHealth += healthModifier;
+    }
+    
+    public void TakeDamage(int damage)
     {
         counter = 0;
    //     previousHealth = healthBar.fillAmount * maxHealth;
