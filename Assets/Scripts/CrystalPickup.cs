@@ -1,29 +1,23 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CrystalPickup : InteractableItems
 {
-    void Update()
+    public int earningPoint = 100;
+    public float crystalDisappearTime;
+
+    void Start()
     {
-
-      //  transform.Rotate(new Vector3(0, 45, 0) * Time.deltaTime);
-
-        if (GameControl.gameControl.gameOver)
-        {
-            gameObject.SetActive(true);
-        }
-
-        if (isInteractable)
-        {
-            Interact();
-        }
+        
     }
+
 
     public override void Interact()
     {
-        //base.Interact();
-        GameControl.gameControl.crystalPoint++;
-        gameObject.SetActive(false);
+        base.Interact();
+        GameControl.gameControl.collectedCrystal++;
+        GameControl.gameControl.score += earningPoint;
+        Destroy(gameObject, t: crystalDisappearTime);
     }
 }
